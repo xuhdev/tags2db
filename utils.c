@@ -52,3 +52,21 @@ t2d_util_str_trim(char* str, const char* blank_chars)
 
     return str;
 }
+
+/*
+ * count how many times has a character appeared in a string
+ */
+    int
+t2d_util_str_chr_count(const char* str, char chr)
+{
+    const char*     p;
+    int             count = 0;
+
+    if(!chr)
+        return 1;
+
+    for(p = strchr(str, chr); p; p = strchr(p + 1, chr))
+        ++ count;
+
+    return count;
+}

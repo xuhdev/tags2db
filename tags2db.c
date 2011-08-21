@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tags_ctags.h"
 
 Global global;
 
@@ -6,6 +7,7 @@ Global global;
 main(int argc, const char *argv[])
 {
     int     i;
+    Record* rec;
 
     /* zero global */
     memset(&global, 0, sizeof(global));
@@ -42,17 +44,24 @@ main(int argc, const char *argv[])
 
     if(!global.input_tag_file)
     {
-        perror("Input tag file is not specified.\n");
+        fprintf(stderr, "Input tag file is not specified.\n");
         exit(2);
     }
 
     if(!global.out_path)
     {
-        perror("Out file path is not specified.\n");
+        fprintf(stderr, "Out file path is not specified.\n");
         exit(3);
     }
 
     global.input_tag_object.input_tag_file = global.input_tag_file;
+
+    rec = ctags_read_one_item(&global.input_tag_object);
+
+    while(rec)
+    {
+        rec = ctags_read_one_item(&global.input_tag_object);
+    }
 
     return 0;
 }

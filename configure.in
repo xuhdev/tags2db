@@ -20,12 +20,15 @@ AC_CHECK_FUNCS( \
                feof \
                fgets \
                fopen \
+               fprintf \
                memmove \
                memset \
                perror \
                strchr \
                strdup \
                strlen \
+               strncpy \
+               strstr \
                strtok,
                [],
                [AC_MSG_ERROR("Some essentially required function not found.")]
