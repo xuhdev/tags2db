@@ -1,4 +1,5 @@
 #include "global.h"
+#include "record.h"
 #include "utils.h"
 
     Record*

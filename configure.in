@@ -21,6 +21,7 @@ AC_CHECK_FUNCS( \
                fgets \
                fopen \
                fprintf \
+               free \
                memmove \
                memset \
                perror \

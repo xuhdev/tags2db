@@ -28,13 +28,6 @@ typedef struct stuVariant
 
 } Variant;
 
-typedef struct stuRecord /* a record */
-{
-    int          number; /* number of fields */
-    char**       fields_name; /* field names */
-    Variant*     data;  /* data in a field in this record */
-} Record;
-
 typedef struct stuInputTagObject
 {
     FILE*           input_tag_file; /* the input tag file */

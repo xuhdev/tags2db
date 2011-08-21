@@ -1,5 +1,6 @@
 #include "global.h"
 #include "tags_ctags.h"
+#include "record.h"
 
 Global global;
 
@@ -60,6 +61,7 @@ main(int argc, const char *argv[])
 
     while(rec)
     {
+        record_free(rec);
         rec = ctags_read_one_item(&global.input_tag_object);
     }
 
