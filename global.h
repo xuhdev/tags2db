@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
+
 typedef enum enumVariantType
 {
     VARIANT_TYPE_UNKNOWN = 0,
