@@ -1,0 +1,34 @@
+AC_PREREQ(2.66)
+AC_INIT(tags2db.c, 0.9, xuhdev@gmail.com)
+AC_CONFIG_HEADERS(config.h)
+AM_INIT_AUTOMAKE(tags2db, 0.9)
+
+# Checks for programs.
+AC_PROG_CC
+
+# Checks for libraries.
+
+# Checks for header files.
+AC_CHECK_HEADERS(stdio.h stdlib.h string.h)
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+
+# Checks for library functions.
+AC_FUNC_MALLOC
+AC_CHECK_FUNCS( \
+               feof \
+               fgets \
+               fopen \
+               memmove \
+               memset \
+               perror \
+               strchr \
+               strdup \
+               strlen \
+               strtok,
+               [],
+               [AC_MSG_ERROR("Some essentially required function not found.")]
+               )
+
+AC_OUTPUT(Makefile)
