@@ -4,6 +4,6 @@
 #include "global.h"
 #include "record.h"
 
-Record* ctags_read_one_item(InputTagObject* ito);
+Record* ctags_read_one_record(InputTagObject* ito);
 
 #endif /* TAGS_CTAGS_H */

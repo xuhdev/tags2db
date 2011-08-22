@@ -3,7 +3,7 @@
 #include "utils.h"
 
     Record*
-ctags_read_one_item(InputTagObject* ito)
+ctags_read_one_record(InputTagObject* ito)
 {
     int         i;
 #define MAX_LINE_SIZE   1024

@@ -57,12 +57,12 @@ main(int argc, const char *argv[])
 
     global.input_tag_object.input_tag_file = global.input_tag_file;
 
-    rec = ctags_read_one_item(&global.input_tag_object);
+    rec = ctags_read_one_record(&global.input_tag_object);
 
     while(rec)
     {
         record_free(rec);
-        rec = ctags_read_one_item(&global.input_tag_object);
+        rec = ctags_read_one_record(&global.input_tag_object);
     }
 
     return 0;
