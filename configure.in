@@ -2,11 +2,22 @@ AC_PREREQ(2.59)
 AC_INIT(tags2db.c, 0.9, xuhdev@gmail.com)
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE(tags2db, 0.9)
+AC_CONFIG_MACRO_DIR(m4)
 
 # Checks for programs.
 AC_PROG_CC
 
 # Checks for libraries.
+
+# check for sqlite3. Currently it is necessary.
+AX_LIB_SQLITE3
+echo $HAVE_SQLITE3
+if test "$success" = "yes"; then
+    CFLAGS="$SQLITE3_CFLAGS $CFLAGS"
+    LIBS="$SQLITE3_LDFLAGS $LIBS"
+else
+    AC_MSG_ERROR(Sqlite3 not found.)
+fi
 
 # Checks for header files.
 AC_CHECK_HEADERS(stdio.h stdlib.h string.h)
