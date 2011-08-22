@@ -1,4 +1,4 @@
-AC_PREREQ(2.66)
+AC_PREREQ(2.59)
 AC_INIT(tags2db.c, 0.9, xuhdev@gmail.com)
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE(tags2db, 0.9)
