@@ -15,7 +15,7 @@ t2d_util_str_trim(char* str, const char* blank_chars)
 
     /* if blank chars are not specified, use space and tab */
     if(!blank_chars)
-        blank_chars = " \t";
+        blank_chars = " \t\r\n";
 
     blank_char_count = strlen(blank_chars);
 
