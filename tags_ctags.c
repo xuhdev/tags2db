@@ -14,14 +14,9 @@ ctags_read_one_record(InputTagObject* ito)
     Record*     ret;
     char*       first_three_fields[3];
 
-    if(feof(tag_file))
-        return NULL;
-
-    while(!feof(tag_file))
+    while(fgets(one_line, MAX_LINE_SIZE, tag_file))
     {
         int     continue_flag = 0;
-
-        fgets(one_line, MAX_LINE_SIZE, tag_file);
 
         /* before doing anything, trim the line */
         t2d_util_str_trim(one_line, NULL);
