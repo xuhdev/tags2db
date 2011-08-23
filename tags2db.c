@@ -65,5 +65,8 @@ main(int argc, const char *argv[])
         rec = ctags_read_one_record(&global.input_tag_object);
     }
 
+    /* close the tag file */
+    fclose(global.input_tag_file);
+
     return 0;
 }
