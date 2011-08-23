@@ -109,6 +109,7 @@ ctags_read_one_record(InputTagObject* ito)
                 ret->fields_name[i] = (char*) malloc(sizeof(char) *
                         (colon_pos - tmpcharptr + 1));
                 strncpy(ret->fields_name[i], tmpcharptr, colon_pos - tmpcharptr);
+                ret->fields_name[i][colon_pos - tmpcharptr] = '\0';
                 ret->data[i].type = VARIANT_TYPE_STRING;
                 ret->data[i].data.string_data = strdup(colon_pos + 1);
             }
