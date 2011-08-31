@@ -46,7 +46,7 @@ AC_CHECK_FUNCS( \
                strstr \
                strtok,
                [],
-               [AC_MSG_ERROR("Some essentially required function not found.")]
+               [AC_MSG_ERROR(Some essentially required function not found.)]
                )
 
 AC_OUTPUT(Makefile)
