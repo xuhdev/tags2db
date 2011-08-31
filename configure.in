@@ -26,13 +26,16 @@ AC_CHECK_HEADERS(stdio.h stdlib.h string.h)
 
 
 # Checks for library functions.
-AC_FUNC_MALLOC
+
+# we check malloc here but not using AC_FUNC_MALLOC because we don't need a gcc
+# compatible malloc
 AC_CHECK_FUNCS( \
                fclose \
                fgets \
                fopen \
                fprintf \
                free \
+               malloc \
                memmove \
                memset \
                perror \
