@@ -20,10 +20,11 @@ else
 fi
 
 # Checks for header files.
-AC_CHECK_HEADERS(stdio.h stdlib.h string.h)
+AC_HEADER_STDBOOL
+AC_CHECK_HEADERS(inttypes.h stdint.h stdio.h stdlib.h string.h)
 
 # Checks for typedefs, structures, and compiler characteristics.
-
+AC_TYPE_INT8_T
 
 # Checks for library functions.
 

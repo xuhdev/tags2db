@@ -98,18 +98,18 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
      */
     for(i = 0; i < rec->number; ++ i)
     {
-        int         alter_table_flag = 1;
+        bool         alter_table_flag = true;
 
         /*
          * If the numberth field of rec is in db_sqlite3_gv.fields_name, let
          * alter_table_flag be 0, indicating that we do not need to alter
-         * table. Otherwise we keep alter_table_flag 1.
+         * table. Otherwise we keep alter_table_flag true.
          */
         for(j = 0; j < db_sqlite3_gv.fields_number; ++ j)
         {
             if(!strcmp(db_sqlite3_gv.fields_name[j], rec->fields_name[i]))
             {
-                alter_table_flag = 0;
+                alter_table_flag = false;
                 break;
             }
         }

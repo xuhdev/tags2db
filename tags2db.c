@@ -17,7 +17,7 @@ main(int argc, const char *argv[])
 
     /* parse argument */
     {
-        int     output_connection_string_flag = 0;
+        bool     output_connection_string_flag = false;
 
         for(i = 1; i < argc; ++i)
         {
@@ -40,7 +40,7 @@ main(int argc, const char *argv[])
                     }
                 }
 
-                output_connection_string_flag = 1;
+                output_connection_string_flag = true;
             }
         }
     }

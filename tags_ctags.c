@@ -16,7 +16,7 @@ ctags_read_one_record(InputTagObject* ito)
 
     while(fgets(one_line, MAX_LINE_SIZE, tag_file))
     {
-        int     continue_flag = 0;
+        bool     continue_flag = false;
 
         /* before doing anything, trim the line */
         t2d_util_str_trim(one_line, NULL);
@@ -36,7 +36,7 @@ ctags_read_one_record(InputTagObject* ito)
             if(!tmpcharptr)
             {
                 /* this line is not right, continue to next line */
-                continue_flag = 1;
+                continue_flag = true;
                 break;
             }
 
