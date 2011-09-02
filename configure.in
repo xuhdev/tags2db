@@ -39,10 +39,12 @@ AC_CHECK_FUNCS( \
                memmove \
                memset \
                perror \
+               strcat \
                strchr \
                strdup \
                strlen \
                strncpy \
+               strrchr \
                strstr \
                strtok,
                [],

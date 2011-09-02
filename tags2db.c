@@ -1,5 +1,6 @@
 #include "global.h"
 #include "tags_ctags.h"
+#include "db_sqlite3.h"
 #include "record.h"
 
 Global global;
@@ -7,21 +8,22 @@ Global global;
     int
 main(int argc, const char *argv[])
 {
-    int     i;
-    Record* rec;
+    int             i;
+    Record*         rec;
+    int             code_return;
 
     /* zero global */
     memset(&global, 0, sizeof(global));
 
     /* parse argument */
     {
-        int     out_file_flag = 0;
+        int     output_connection_string_flag = 0;
 
         for(i = 1; i < argc; ++i)
         {
-            if(out_file_flag)
+            if(output_connection_string_flag)
             {
-                global.out_path = strdup(argv[i]);
+                global.output_db_object.connection_string = strdup(argv[i]);
             }
             else
             {
@@ -38,7 +40,7 @@ main(int argc, const char *argv[])
                     }
                 }
 
-                out_file_flag = 1;
+                output_connection_string_flag = 1;
             }
         }
     }
@@ -49,7 +51,7 @@ main(int argc, const char *argv[])
         exit(2);
     }
 
-    if(!global.out_path)
+    if(!global.output_db_object.connection_string)
     {
         fprintf(stderr, "Out file path is not specified.\n");
         exit(3);
@@ -57,14 +59,28 @@ main(int argc, const char *argv[])
 
     global.input_tag_object.input_tag_file = global.input_tag_file;
 
+    if((code_return = db_sqlite3_initialize(&global.output_db_object)) != 0)
+    {
+        fprintf(stderr, "Failed to initialize sqlite3: %d\n", code_return);
+        exit(4);
+    }
+
     rec = ctags_read_one_record(&global.input_tag_object);
 
     while(rec)
     {
+        if((code_return = db_sqlite3_write_one_record(
+                        &global.output_db_object, rec)) != 0)
+        {
+            fprintf(stderr, "Failed to write to sqlite3 database: %d\n",
+                    code_return);
+            break;
+        }
         record_free(rec);
         rec = ctags_read_one_record(&global.input_tag_object);
     }
 
+    db_sqlite3_finalize(&global.output_db_object);
     /* close the tag file */
     fclose(global.input_tag_file);
 

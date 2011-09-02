@@ -35,12 +35,17 @@ typedef struct stuInputTagObject
     FILE*           input_tag_file; /* the input tag file */
 } InputTagObject;
 
+typedef struct stuOutputDbObject
+{
+    const char*     connection_string;
+} OutputDbObject;
+
 typedef struct stuGlobal /* Global varibles, only one instance */
 {
     FILE*           input_tag_file;
-    const char*     out_path;
 
     InputTagObject input_tag_object;
+    OutputDbObject output_db_object;
 } Global;
 
 extern Global           global;
