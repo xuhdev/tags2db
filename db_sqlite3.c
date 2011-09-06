@@ -103,6 +103,14 @@ db_sqlite3_initialize(const OutputDbObject* odo)
     db_sqlite3_gv.fields_name[db_sqlite3_gv.fields_number ++] =
         strdup("tagname");
 
+    /* begin transaction */
+    if(sqlite3_exec(db_sqlite3_gv.handle, "BEGIN",
+                NULL, NULL, NULL) != SQLITE_OK)
+    {
+        sqlite3_close(db_sqlite3_gv.handle);
+        return 4;
+    }
+
     return 0;
 }
 
@@ -300,6 +308,15 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
     int
 db_sqlite3_finalize(const OutputDbObject* odo)
 {
+
+    /* commit transaction */
+    if(sqlite3_exec(db_sqlite3_gv.handle, "COMMIT",
+                NULL, NULL, NULL) != SQLITE_OK)
+    {
+        sqlite3_close(db_sqlite3_gv.handle);
+        return 1;
+    }
+
     sqlite3_close(db_sqlite3_gv.handle);
 
     return 0;
