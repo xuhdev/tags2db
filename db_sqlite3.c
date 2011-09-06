@@ -23,7 +23,7 @@ db_sqlite3_initialize(const OutputDbObject* odo)
 {
     const char*     colon_pos;
     char*           file_name;
-    char*           table_creation_statement;
+    char*           statement;
 
     /*
      * To initialize sqlite3 related resources, we first clear db_sqlite3_gv,
@@ -55,28 +55,49 @@ db_sqlite3_initialize(const OutputDbObject* odo)
     free(file_name);
 
     /*
+     * drop the table first
+     */
+    statement = (char*) malloc(sizeof(char) * (
+                21 +                        /* DROP TABLE IF EXISTS */
+                strlen(db_sqlite3_gv.table_name) + /* table name */
+                2));                                  /* ; NULL */
+
+    strcpy(statement, "DROP TABLE IF EXISTS ");
+    strcat(statement, db_sqlite3_gv.table_name);
+    strcat(statement, ";");
+
+    if(sqlite3_exec(db_sqlite3_gv.handle, statement,
+                NULL, NULL, NULL) != SQLITE_OK)
+    {
+        free(statement);
+        sqlite3_close(db_sqlite3_gv.handle);
+        return 3;
+    }
+    free(statement);
+
+    /*
      * Now we create the table. The table has one field (tagname text). If we
      * failed to create the table, we return 2
      */
-    table_creation_statement = (char*) malloc((
+    statement = (char*) malloc((
         27 +                                /* CREATE TABLE IF NOT EXISTS */
         strlen(db_sqlite3_gv.table_name) +  /* table_name */
         28 +                                /* (tagname TEXT DEFAULT NULL); */
         1)                                  /* NULL */
         * sizeof(char));
-    strcpy(table_creation_statement, "CREATE TABLE IF NOT EXISTS ");
-    strcat(table_creation_statement, db_sqlite3_gv.table_name);
-    strcat(table_creation_statement, "(tags2db_tagname TEXT DEFAULT NULL);");
+    strcpy(statement, "CREATE TABLE IF NOT EXISTS ");
+    strcat(statement, db_sqlite3_gv.table_name);
+    strcat(statement, "(tags2db_tagname TEXT DEFAULT NULL);");
 
-    if(sqlite3_exec(db_sqlite3_gv.handle, table_creation_statement,
+    if(sqlite3_exec(db_sqlite3_gv.handle, statement,
                 NULL, NULL, NULL) != SQLITE_OK)
     {
-        free(table_creation_statement);
+        free(statement);
         sqlite3_close(db_sqlite3_gv.handle);
         return 2;
     }
 
-    free(table_creation_statement);
+    free(statement);
 
     /* add the field tagname to db_sqlite3_gv.fields_name */
     db_sqlite3_gv.fields_name[db_sqlite3_gv.fields_number ++] =
