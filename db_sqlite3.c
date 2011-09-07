@@ -305,7 +305,6 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
     strcat(statement, ")");
 
     
-    puts(statement);
     if(sqlite3_exec(db_sqlite3_gv.handle, statement,
                 NULL, NULL, NULL) != SQLITE_OK)
     {
