@@ -96,12 +96,12 @@ t2d_util_str_replace(char* str, const char* substr, const char* rplstr)
 
         if(len_substr > len_rplstr)
             memmove(subpos + len_rplstr, subpos + len_substr,
-                    strlen(subpos + len_substr) * sizeof(char));
+                    (strlen(subpos + len_substr) + 1) * sizeof(char));
     }
     else
     {
         memmove(subpos + len_rplstr, subpos + len_substr,
-                strlen(subpos + len_substr) * sizeof(char));
+                (strlen(subpos + len_substr) + 1) * sizeof(char));
         memcpy(subpos, rplstr, strlen(rplstr) * sizeof(char));
     }
 
