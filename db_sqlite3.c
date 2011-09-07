@@ -1,5 +1,6 @@
 #include "global.h"
 #include "db_sqlite3.h"
+#include "utils.h"
 #include <sqlite3.h>
 
 
@@ -120,6 +121,8 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
     int         i, j;
     int         statement_max_len;
     char*       statement;
+    char*       p;
+    char**      data_strings;
 
     /*
      * First of all, we check wether all the fields in rec has been defined in
@@ -213,6 +216,12 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
         }
     }
 
+    /* used to store the string data whose single quotes has been replaced by
+     * two single quotes
+     */
+    data_strings = (char**) malloc(sizeof(char*) * rec->number); 
+    memset(data_strings, 0, sizeof(char**) * rec->number);
+
     /*
      * Insert data into the table
      * INSERT INTO table (column1, [column2, ...])
@@ -244,7 +253,9 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
             statement_max_len += 3;
             break;
         case VARIANT_TYPE_STRING:
-            statement_max_len += strlen(rec->data[i].data.string_data) + 2;
+            data_strings[i] = t2d_util_str_replace_dup(
+                    rec->data[i].data.string_data, "\'", "\'\'");
+            statement_max_len += strlen(data_strings[i]) + 2;
             break;
         }
         statement_max_len += 1; /* , */
@@ -283,7 +294,7 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
             break;
         case VARIANT_TYPE_STRING:
             strcat(statement, "\'");
-            strcat(statement, rec->data[i].data.string_data);
+            strcat(statement, data_strings[i]);
             strcat(statement, "\'");
             break;
         }
@@ -293,6 +304,8 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
     }
     strcat(statement, ")");
 
+    
+    puts(statement);
     if(sqlite3_exec(db_sqlite3_gv.handle, statement,
                 NULL, NULL, NULL) != SQLITE_OK)
     {
@@ -301,6 +314,12 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
     }
 
     free(statement);
+
+    for(i = 0; i < rec->number; ++ i)
+        if(data_strings[i])
+            free(data_strings[i]);
+
+    free(data_strings);
 
     return 0;
 }

@@ -70,3 +70,95 @@ t2d_util_str_chr_count(const char* str, char chr)
 
     return count;
 }
+
+/*
+ * replace string. Returns the address of the place where the replacing
+ * occurs.
+ */
+    char*
+t2d_util_str_replace(char* str, const char* substr, const char* rplstr)
+{
+    char*       subpos;
+    int         len_substr;
+    int         len_rplstr;
+    
+    subpos = strstr(str, substr);
+
+    if(!subpos)
+        return NULL;
+
+    len_substr = strlen(substr);
+    len_rplstr = strlen(rplstr);
+
+    if(len_substr >= len_rplstr)
+    {
+        memcpy(subpos, rplstr, strlen(rplstr) * sizeof(char));
+
+        if(len_substr > len_rplstr)
+            memmove(subpos + len_rplstr, subpos + len_substr,
+                    strlen(subpos + len_substr) * sizeof(char));
+    }
+    else
+    {
+        memmove(subpos + len_rplstr, subpos + len_substr,
+                strlen(subpos + len_substr) * sizeof(char));
+        memcpy(subpos, rplstr, strlen(rplstr) * sizeof(char));
+    }
+
+    return subpos;
+}
+
+/*
+ * replace all substr with rplstr and return a duplicated replaced string
+ */
+    char*
+t2d_util_str_replace_dup(const char* str, const char* substr,
+        const char* rplstr)
+{
+    char*       ret;
+    bool        increasement_flag; /* whether the string is increasing */
+    int         len_rplstr;
+    int         len_substr;
+    int         len_delta;
+    char*       p;
+
+    increasement_flag = (strlen(rplstr) > strlen(substr));
+
+    len_rplstr = strlen(rplstr);
+    len_substr = strlen(substr);
+    len_delta = len_rplstr - len_substr;
+
+    ret = (char*) malloc(sizeof(char) * (strlen(str) + 1 +
+            (increasement_flag ? len_delta : 0)));
+
+    strcpy(ret, str);
+
+    p = ret;
+
+    while(true)
+    {
+        p = t2d_util_str_replace(p, substr, rplstr);
+
+        if(!p)
+            break;
+
+        p += len_rplstr;
+
+        if(increasement_flag)
+        {
+            char*       tmp;
+
+            tmp = (char*) malloc(sizeof(char) * (strlen(ret) + len_delta + 1));
+
+            strcpy(tmp, ret);
+
+            p = tmp + (p - ret);
+
+            free(ret);
+
+            ret = tmp;
+        }
+    }
+
+    return ret;
+}
