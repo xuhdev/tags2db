@@ -52,7 +52,7 @@ main(int argc, const char *argv[])
                     
                     if(!global.input_tag_file)
                     {
-                        perror("Unable to open the tag file.\n");
+                        perror("Unable to open the tag file");
                         exit(1);
                     }
                 }
