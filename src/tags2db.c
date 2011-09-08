@@ -97,7 +97,11 @@ main(int argc, const char *argv[])
         rec = tags_ctags_read_one_record(&global.input_tag_object);
     }
 
-    db_sqlite3_finalize(&global.output_db_object);
+    if((code_return = db_sqlite3_finalize(&global.output_db_object)) != 0)
+    {
+        fprintf(stderr, "Failed to finalize the sqlite3 database: %d\n",
+                code_return);
+    }
     /* close the tag file */
     fclose(global.input_tag_file);
 
