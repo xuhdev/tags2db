@@ -82,7 +82,7 @@ main(int argc, const char *argv[])
         exit(4);
     }
 
-    rec = ctags_read_one_record(&global.input_tag_object);
+    rec = tags_ctags_read_one_record(&global.input_tag_object);
 
     while(rec)
     {
@@ -94,7 +94,7 @@ main(int argc, const char *argv[])
             break;
         }
         record_free(rec);
-        rec = ctags_read_one_record(&global.input_tag_object);
+        rec = tags_ctags_read_one_record(&global.input_tag_object);
     }
 
     db_sqlite3_finalize(&global.output_db_object);
