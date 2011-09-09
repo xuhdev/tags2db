@@ -45,12 +45,13 @@ main(int argc, const char *argv[])
             else
             {
                 if(!strcmp(argv[i], "-"))
-                    global.input_tag_file = stdin;
+                    global.input_tag_object.input_tag_file = stdin;
                 else
                 {
-                    global.input_tag_file = fopen(argv[i], "r");
+                    global.input_tag_object.input_tag_file = fopen(
+                            argv[i], "r");
                     
-                    if(!global.input_tag_file)
+                    if(!global.input_tag_object.input_tag_file)
                     {
                         perror("Unable to open the tag file");
                         exit(1);
@@ -62,7 +63,7 @@ main(int argc, const char *argv[])
         }
     }
 
-    if(!global.input_tag_file)
+    if(!global.input_tag_object.input_tag_file)
     {
         fprintf(stderr, "Input tag file is not specified.\n");
         exit(2);
@@ -73,8 +74,6 @@ main(int argc, const char *argv[])
         fprintf(stderr, "Out file path is not specified.\n");
         exit(3);
     }
-
-    global.input_tag_object.input_tag_file = global.input_tag_file;
 
     if((code_return = db_sqlite3_initialize(&global.output_db_object)) != 0)
     {
@@ -103,7 +102,7 @@ main(int argc, const char *argv[])
                 code_return);
     }
     /* close the tag file */
-    fclose(global.input_tag_file);
+    fclose(global.input_tag_object.input_tag_file);
 
     return 0;
 }

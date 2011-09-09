@@ -84,8 +84,6 @@ typedef struct stuOutputDbObject
 
 typedef struct stuGlobal /* Global varibles, only one instance */
 {
-    FILE*           input_tag_file;
-
     InputTagObject input_tag_object;
     OutputDbObject output_db_object;
 } Global;
