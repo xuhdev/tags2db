@@ -21,10 +21,11 @@ fi
 
 # Checks for header files.
 AC_HEADER_STDBOOL
-AC_CHECK_HEADERS(inttypes.h stdint.h stdio.h stdlib.h string.h)
+AC_CHECK_HEADERS(inttypes.h stddef.h stdint.h stdio.h stdlib.h string.h)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_INT8_T
+AC_CHECK_TYPES([size_t])
 
 # Checks for library functions.
 

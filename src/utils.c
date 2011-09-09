@@ -96,8 +96,8 @@ t2d_util_str_chr_count(const char* str, char chr)
 t2d_util_str_replace(char* str, const char* substr, const char* rplstr)
 {
     char*       subpos;
-    int         len_substr;
-    int         len_rplstr;
+    size_t      len_substr;
+    size_t      len_rplstr;
     
     subpos = strstr(str, substr);
 
