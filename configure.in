@@ -52,4 +52,8 @@ AC_CHECK_FUNCS( \
                [AC_MSG_ERROR(Some essentially required function not found.)]
                )
 
+# non-essential functions
+AC_CHECK_FUNCS( \
+               strndup)
+
 AC_OUTPUT([Makefile src/Makefile])

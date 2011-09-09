@@ -179,3 +179,28 @@ t2d_util_str_replace_dup(const char* str, const char* substr,
 
     return ret;
 }
+
+#ifndef HAVE_STRNDUP
+
+/*
+ * strndup
+ */
+    char*
+strndup (const char* s, size_t n)
+{
+  size_t    len = strlen(s);
+  size_t    new_len;
+  char*     new_str;
+
+  new_len = len < n ? len : n;
+
+  new_str = (char*) malloc(sizeof(char) * (new_len + 1));
+
+  if(!new_str)
+    return NULL;
+
+  new_str[new_len] = '\0';
+  return (char*) memcpy(new_str, s, new_len);
+}
+
+#endif /* HAVE_STRNDUP */

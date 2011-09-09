@@ -23,4 +23,9 @@ int t2d_util_str_chr_count(const char* str, char chr);
 char* t2d_util_str_replace(char* str, const char* substr, const char* rplstr);
 char* t2d_util_str_replace_dup(
         const char* str, const char* substr, const char* rplstr);
+
+#ifndef HAVE_STRNDUP
+char* strndup (const char* s, size_t n);
+#endif /* HAVE_STRNDUP */
+
 #endif /* UTILS_H */
