@@ -140,6 +140,13 @@ main(int argc, const char *argv[])
                 fprintf(stdout, get_help_string());
                 exit(0);
             }
+            else if(strlen(argv[i]) > 0 && argv[i][0] == '-')
+            {
+                fprintf(stderr, "Uknown option \"");
+                fprintf(stderr, argv[i]);
+                fprintf(stderr, "\"\n");
+                exit(7);
+            }
             else
             {
                 if(!strcmp(argv[i], "-"))
