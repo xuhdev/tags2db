@@ -50,6 +50,7 @@ AC_CHECK_FUNCS( \
                perror \
                strcat \
                strchr \
+               strcmp \
                strdup \
                strlen \
                strncpy \

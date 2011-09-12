@@ -49,6 +49,11 @@ typedef signed int      _Bool;
 # define false  0
 #endif /* HAVE_STDBOOL_H */
 
+#define TAGS_TYPE_INFO_COUNT   1
+#define DB_TYPE_INFO_COUNT     1
+
+typedef struct stuRecord        Record;
+
 typedef enum enumVariantType
 {
     VARIANT_TYPE_UNKNOWN = 0,
@@ -82,10 +87,31 @@ typedef struct stuOutputDbObject
     const char*     connection_string;
 } OutputDbObject;
 
+/* tag types */
+typedef struct stuTagsTypeInfo
+{
+    const char*     name;
+
+    Record* (*func_read_one_record) (InputTagObject* ito);
+} TagsTypeInfo;
+
+/* db types */
+typedef struct stuDbTypeInfo
+{
+    const char*     name;
+
+    int (*func_initialize) (const OutputDbObject* odo);
+    int (*func_write_one_record) (
+            const OutputDbObject* odo, const Record* rec);
+    int (*func_finalize) (const OutputDbObject* odo);
+} DbTypeInfo;
+
 typedef struct stuGlobal /* Global varibles, only one instance */
 {
     InputTagObject input_tag_object;
     OutputDbObject output_db_object;
+    TagsTypeInfo   tags_type_infos[TAGS_TYPE_INFO_COUNT];
+    DbTypeInfo     db_type_infos[DB_TYPE_INFO_COUNT];
 } Global;
 
 extern Global           global;

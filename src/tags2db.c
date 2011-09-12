@@ -28,13 +28,27 @@ main(int argc, const char *argv[])
     int             i;
     Record*         rec;
     int             code_return;
+    int             tags_type = 0;
+    int             db_type = 0;
 
     /* zero global */
     memset(&global, 0, sizeof(global));
 
+    global.tags_type_infos[0].name = "ctags";
+    global.tags_type_infos[0].func_read_one_record =
+        tags_ctags_read_one_record;
+
+    global.db_type_infos[0].name = "sqlite3";
+    global.db_type_infos[0].func_initialize = db_sqlite3_initialize;
+    global.db_type_infos[0].func_write_one_record =
+        db_sqlite3_write_one_record;
+    global.db_type_infos[0].func_finalize = db_sqlite3_finalize;
+
     /* parse argument */
     {
         bool     output_connection_string_flag = false;
+        bool     tags_type_flag = false;
+        bool     db_type_flag = false;
 
         for(i = 1; i < argc; ++i)
         {
@@ -42,6 +56,68 @@ main(int argc, const char *argv[])
             {
                 global.output_db_object.connection_string = strdup(argv[i]);
             }
+            else if(tags_type_flag)
+            {
+                int     j;
+
+                tags_type_flag = false;
+
+                /* 
+                 * Check whether the specified tags type is available. If not
+                 * available, print an error message and exit.
+                 */
+                tags_type = -1;
+
+                for(j = 0; j < TAGS_TYPE_INFO_COUNT; ++ j)
+                {
+                    if(!strcmp(global.tags_type_infos[j].name, argv[i]))
+                    {
+                        tags_type = j;
+                        break;
+                    }
+                }
+
+                if(tags_type == -1)
+                {
+                    fprintf(stderr, "Tags type \"");
+                    fprintf(stderr, argv[i]);
+                    fprintf(stderr, "\" is not available.\n");
+                    exit(5);
+                }
+            }
+            else if(db_type_flag)
+            {
+                int     j;
+
+                db_type_flag = false;
+
+                /* 
+                 * Check whether the specified tags type is available. If not
+                 * available, print an error message and exit.
+                 */
+                db_type = -1;
+
+                for(j = 0; j < DB_TYPE_INFO_COUNT; ++ j)
+                {
+                    if(!strcmp(global.db_type_infos[j].name, argv[i]))
+                    {
+                        db_type = j;
+                        break;
+                    }
+                }
+
+                if(db_type == -1)
+                {
+                    fprintf(stderr, "Database type \"");
+                    fprintf(stderr, argv[i]);
+                    fprintf(stderr, "\" is not available.\n");
+                    exit(6);
+                }
+            }
+            else if(!strcmp(argv[i], "-t"))
+                tags_type_flag = true;
+            else if(!strcmp(argv[i], "-d"))
+                db_type_flag = true;
             else
             {
                 if(!strcmp(argv[i], "-"))
@@ -75,17 +151,20 @@ main(int argc, const char *argv[])
         exit(3);
     }
 
-    if((code_return = db_sqlite3_initialize(&global.output_db_object)) != 0)
+    if((code_return = (*global.db_type_infos[db_type].func_initialize) (
+                    &global.output_db_object)) != 0)
     {
         fprintf(stderr, "Failed to initialize sqlite3: %d\n", code_return);
         exit(4);
     }
 
-    rec = tags_ctags_read_one_record(&global.input_tag_object);
+    rec = (*global.tags_type_infos[tags_type].func_read_one_record) (
+            &global.input_tag_object);
 
     while(rec)
     {
-        if((code_return = db_sqlite3_write_one_record(
+        if((code_return =
+                    (*global.db_type_infos[db_type].func_write_one_record) (
                         &global.output_db_object, rec)) != 0)
         {
             fprintf(stderr, "Failed to write to sqlite3 database: %d\n",
@@ -93,10 +172,12 @@ main(int argc, const char *argv[])
             break;
         }
         record_free(rec);
-        rec = tags_ctags_read_one_record(&global.input_tag_object);
+        rec = (*global.tags_type_infos[tags_type].func_read_one_record) (
+                &global.input_tag_object);
     }
 
-    if((code_return = db_sqlite3_finalize(&global.output_db_object)) != 0)
+    if((code_return = (*global.db_type_infos[db_type].func_finalize) (
+                    &global.output_db_object)) != 0)
     {
         fprintf(stderr, "Failed to finalize the sqlite3 database: %d\n",
                 code_return);
