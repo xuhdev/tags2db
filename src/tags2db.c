@@ -35,8 +35,20 @@ get_help_string(void)
         "-t                 Input tags type (ctags, etc.). Default ctags\n"
         "-d                 Output database type (sqlite3, etc.). Default sqlite3\n"
         "-h or --help       Print this help message\n"
+        "--version          Print version information\n"
         "\n"
         "e.g. tags2db -t ctags -d sqlite3 ./tags tags.sqlite:tags\n\n";
+}
+
+    const char*
+get_version_string(void)
+{
+    return
+        PACKAGE " " PACKAGE_VERSION "\n"
+        "Copyright (C) 2011 Hong Xu\n"
+        "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n"
+        "This is free software: you are free to change and redistribute it.\n"
+        "There is NO WARRANTY, to the extent permitted by law.\n";
 }
 
     int
@@ -138,6 +150,11 @@ main(int argc, const char *argv[])
             else if((!strcmp(argv[i], "-h")) || (!strcmp(argv[i], "--help")))
             {
                 fprintf(stdout, get_help_string());
+                exit(0);
+            }
+            else if(!strcmp(argv[i], "--version"))
+            {
+                fprintf(stdout, get_version_string());
                 exit(0);
             }
             else if(strlen(argv[i]) > 0 && argv[i][0] == '-')
