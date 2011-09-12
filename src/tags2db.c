@@ -22,6 +22,23 @@
 
 Global global;
 
+    const char*
+get_help_string(void)
+{
+    return
+        "Usage: " PACKAGE " [options] input_tags_file output_database\n"
+        "input_tags_file is the tags file to be input\n"
+        "output_database is \"database_file:table_name\" for sqlite3\n"
+        "\n"
+        "Options:\n"
+        "\n"
+        "-t                 Input tags type (ctags, etc.). Default ctags\n"
+        "-d                 Output database type (sqlite3, etc.). Default sqlite3\n"
+        "-h or --help       Print this help message\n"
+        "\n"
+        "e.g. tags2db -t ctags -d sqlite3 ./tags tags.sqlite:tags\n\n";
+}
+
     int
 main(int argc, const char *argv[])
 {
@@ -118,6 +135,11 @@ main(int argc, const char *argv[])
                 tags_type_flag = true;
             else if(!strcmp(argv[i], "-d"))
                 db_type_flag = true;
+            else if((!strcmp(argv[i], "-h")) || (!strcmp(argv[i], "--help")))
+            {
+                fprintf(stdout, get_help_string());
+                exit(0);
+            }
             else
             {
                 if(!strcmp(argv[i], "-"))
