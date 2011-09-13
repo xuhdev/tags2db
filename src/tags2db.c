@@ -26,12 +26,14 @@ Global global;
 get_help_string(void)
 {
     return
-        "Usage: " PACKAGE " [options] input_tags_file output_database\n"
+        "Usage:" PACKAGE " [options] input_tags_file output_database\n"
+        "Or:   " PACKAGE " -f input_tags_file [options] output_database\n"
         "input_tags_file is the tags file to be input\n"
         "output_database is \"database_file:table_name\" for sqlite3\n"
         "\n"
         "Options:\n"
         "\n"
+        "-f                 Input tags file name\n"
         "-t                 Input tags type (ctags, etc.). Default ctags\n"
         "-d                 Output database type (sqlite3, etc.). Default sqlite3\n"
         "-h or --help       Print this help message\n"
@@ -75,15 +77,34 @@ main(int argc, const char *argv[])
 
     /* parse argument */
     {
-        bool     output_connection_string_flag = false;
+        bool     tags_file_name_flag = false; /* indicates it's "-f" switch */
+        /* indicates tags file name has already been specified */
+        bool     tags_file_name_already_specified_flag = false;
         bool     tags_type_flag = false;
         bool     db_type_flag = false;
 
         for(i = 1; i < argc; ++i)
         {
-            if(output_connection_string_flag)
+            if(tags_file_name_flag)
             {
-                global.output_db_object.connection_string = strdup(argv[i]);
+                tags_file_name_flag = false;
+
+                if(!strcmp(argv[i], "-"))
+                    global.input_tag_object.input_tag_file = stdin;
+                else
+                {
+                    global.input_tag_object.input_tag_file = fopen(
+                            argv[i], "r");
+                    
+                    if(!global.input_tag_object.input_tag_file)
+                    {
+                        perror("Unable to open the tag file");
+                        exit(1);
+                    }
+                }
+
+                tags_file_name_already_specified_flag = true;
+
             }
             else if(tags_type_flag)
             {
@@ -147,6 +168,8 @@ main(int argc, const char *argv[])
                 tags_type_flag = true;
             else if(!strcmp(argv[i], "-d"))
                 db_type_flag = true;
+            else if(!strcmp(argv[i], "-f"))
+                tags_file_name_flag = true;
             else if((!strcmp(argv[i], "-h")) || (!strcmp(argv[i], "--help")))
             {
                 fprintf(stdout, get_help_string());
@@ -164,23 +187,16 @@ main(int argc, const char *argv[])
                 fprintf(stderr, "\"\n");
                 exit(7);
             }
-            else
+            else /* when no "-" siwtch is specified */
             {
-                if(!strcmp(argv[i], "-"))
-                    global.input_tag_object.input_tag_file = stdin;
+                if(tags_file_name_already_specified_flag)
+                    global.output_db_object.connection_string = strdup(
+                            argv[i]);
                 else
                 {
-                    global.input_tag_object.input_tag_file = fopen(
-                            argv[i], "r");
-                    
-                    if(!global.input_tag_object.input_tag_file)
-                    {
-                        perror("Unable to open the tag file");
-                        exit(1);
-                    }
+                    -- i;
+                    tags_file_name_flag = true;
                 }
-
-                output_connection_string_flag = true;
             }
         }
     }
