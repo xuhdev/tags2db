@@ -20,12 +20,17 @@
 
 #include "global.h"
 
-typedef struct stuRecord /* a record */
+struct stuRecord /* a record */
 {
     int          number; /* number of fields */
     char**       fields_name; /* field names */
     Variant*     data;  /* data in a field in this record */
-} Record;
+};
+
+#ifndef DEFINED_STRUCT_RECORD
+# define DEFINED_STRUCT_RECORD
+typedef struct stuRecord        Record;
+#endif
 
 void record_free(Record* r);
 

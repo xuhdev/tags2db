@@ -52,7 +52,10 @@ typedef signed int      _Bool;
 #define TAGS_TYPE_INFO_COUNT   1
 #define DB_TYPE_INFO_COUNT     1
 
+#ifndef DEFINED_STRUCT_RECORD
+# define DEFINED_STRUCT_RECORD
 typedef struct stuRecord        Record;
+#endif
 
 typedef enum enumVariantType
 {
