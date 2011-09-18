@@ -24,31 +24,21 @@
 t2d_util_str_trim(char* str, const char* blank_chars)
 {
     int         i;
-    int         blank_char_count; /* count of blank chars */
-    int         len_str; /* the length of str */
     char*       p;
-
-    len_str = strlen(str);
 
     /* if blank chars are not specified, use space and tab */
     if(!blank_chars)
         blank_chars = " \t\r\n";
 
-    blank_char_count = strlen(blank_chars);
-
     /*
      * check blank chars at the end of the string, if we meet a nonempty char, 
      * then we know that it's time to trim
      */
-    for(i = len_str - 1; i >= 0; -- i)
+    for(i = strlen(str) - 1; i >= 0; -- i)
     {
         if(!strchr(blank_chars, str[i]))
         {
-            if(i < len_str - 1)
-            {
-                str[i + 1] = '\0';
-                len_str = strlen(str);
-            }
+            str[i + 1] = '\0';
             break;
         }
     }
