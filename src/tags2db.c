@@ -22,25 +22,28 @@
 
 Global global;
 
-    const char*
-get_help_string(void)
+    static void
+print_help_string(void)
 {
-    return
-        "Usage:" PACKAGE " [options] input_tags_file output_database\n"
-        "Or:   " PACKAGE " -f input_tags_file [options] output_database\n"
-        "input_tags_file is the tags file to be input\n"
-        "output_database is \"database_file:table_name\" for sqlite3\n"
-        "\n"
-        "Options:\n"
-        "\n"
-        "-f                 Input tags file name\n"
-        "-t                 Input tags type (ctags, etc.). Default ctags\n"
-        "-d                 Output database type (sqlite3, etc.). Default sqlite3\n"
-        "-p or --prefix     Prefix added to field names of the databse. Default \"tags2db_\"\n"
-        "-h or --help       Print this help message\n"
-        "--version          Print version information\n"
-        "\n"
-        "e.g. tags2db -t ctags -d sqlite3 ./tags tags.sqlite:tags\n\n";
+    printf("Usage:" PACKAGE " [options] input_tags_file output_database\n");
+    printf("Or:   " PACKAGE " -f input_tags_file [options] output_database\n");
+    printf("input_tags_file is the tags file to be input\n");
+    printf("output_database is \"database_file:table_name\" for sqlite3\n");
+    printf("\n");
+    printf("Options:\n");
+    printf("\n");
+    printf("-f                 Input tags file name(\"-\" means reading from stdin\n");
+    printf("-t                 Input tags type (ctags, etc.). Default ctags\n");
+    printf("-d                 Output database type (sqlite3, etc.). Default sqlite3\n");
+    printf("-p or --prefix     Prefix added to field names of the databse. Default \"tags2db_\"\n");
+    printf("-h or --help       Print this help message\n");
+    printf("--version          Print version information\n");
+    printf("\n");
+    printf("e.g.\n");
+    printf("Convert a ctags file to a sqlite database:\n");
+    printf("tags2db -t ctags -d sqlite3 ./tags tags.sqlite:tags\n");
+    printf("Generate tags for /usr/include by Exuberant Ctags and put them into a sqlite database:\n");
+    printf("ctags -R  -f - -u /usr/include | tags2db -f - tags.sqlite3:tags\n\n");
 }
 
     const char*
@@ -188,7 +191,7 @@ main(int argc, const char *argv[])
             }
             else if((!strcmp(argv[i], "-h")) || (!strcmp(argv[i], "--help")))
             {
-                fprintf(stdout, get_help_string());
+                print_help_string();
                 exit(0);
             }
             else if(!strcmp(argv[i], "--version"))
