@@ -105,7 +105,9 @@ db_sqlite3_initialize(const OutputDbObject* odo)
         * sizeof(char));
     strcpy(statement, "CREATE TABLE IF NOT EXISTS ");
     strcat(statement, db_sqlite3_gv.table_name);
-    strcat(statement, "(tags2db_tagname TEXT DEFAULT NULL);");
+    strcat(statement, "(");
+    strcat(statement, odo->field_prefix);
+    strcat(statement, "tagname TEXT DEFAULT NULL);");
 
     if(sqlite3_exec(db_sqlite3_gv.handle, statement,
                 NULL, NULL, NULL) != SQLITE_OK)
@@ -137,6 +139,7 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
 {
     int         i, j;
     int         statement_max_len;
+    int         field_prefix_len;
     char*       statement;
     char*       p;
     char**      data_strings;
@@ -191,7 +194,7 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
                     12 +                        /* ALTER TABLE */
                     strlen(db_sqlite3_gv.table_name) + 1 + /* table */
                     11 +                        /* ADD COLUMN */
-                    8 +                         /* tags2db_ */
+                    strlen(odo->field_prefix) + /* field_prefix */
                     strlen(rec->fields_name[i]) + 1 + /* column name */
                     type_len + 1 +                    /* type */
                     13 +                             /* DEFAULT NULL */
@@ -201,7 +204,7 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
             strcpy(statement, "ALTER TABLE ");
             strcat(statement, db_sqlite3_gv.table_name);
             strcat(statement, " ADD COLUMN ");
-            strcat(statement, "tags2db_");
+            strcat(statement, odo->field_prefix);
             strcat(statement, rec->fields_name[i]);
             switch(rec->data[i].type)
             {
@@ -249,9 +252,10 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
         strlen(db_sqlite3_gv.table_name) + 1 +  /* table */
         1;                             /* ( */
 
+    field_prefix_len = strlen(odo->field_prefix);
     for(i = 0; i < rec->number; ++ i)
     {
-        statement_max_len += 8;     /* tags2db_ */
+        statement_max_len += field_prefix_len;     /* field prefix */
         statement_max_len +=
             strlen(rec->fields_name[i]) + /* fields */
             1;                          /* , */
@@ -289,7 +293,7 @@ db_sqlite3_write_one_record(const OutputDbObject* odo, const Record* rec)
     strcat(statement, " (");
     for(i = 0; i < rec->number; ++ i)
     {
-        strcat(statement, "tags2db_");
+        strcat(statement, odo->field_prefix);
         strcat(statement, rec->fields_name[i]);
         /* we do not need to add ',' for the last field */
         if(i < rec->number - 1)

@@ -36,6 +36,7 @@ get_help_string(void)
         "-f                 Input tags file name\n"
         "-t                 Input tags type (ctags, etc.). Default ctags\n"
         "-d                 Output database type (sqlite3, etc.). Default sqlite3\n"
+        "-p or --prefix     Prefix added to field names of the databse. Default \"tags2db_\"\n"
         "-h or --help       Print this help message\n"
         "--version          Print version information\n"
         "\n"
@@ -75,6 +76,9 @@ main(int argc, const char *argv[])
         db_sqlite3_write_one_record;
     global.db_type_infos[0].func_finalize = db_sqlite3_finalize;
 
+    /* default field name prefix is "tags2db_" */
+    global.output_db_object.field_prefix = "tags2db_";
+
     /* parse argument */
     {
         bool     tags_file_name_flag = false; /* indicates it's "-f" switch */
@@ -82,6 +86,7 @@ main(int argc, const char *argv[])
         bool     tags_file_name_already_specified_flag = false;
         bool     tags_type_flag = false;
         bool     db_type_flag = false;
+        bool     db_field_prefix_flag = false; /* -p or --prefix */
 
         for(i = 1; i < argc; ++i)
         {
@@ -164,12 +169,23 @@ main(int argc, const char *argv[])
                     exit(6);
                 }
             }
+            else if(db_field_prefix_flag)
+            {
+                db_field_prefix_flag = false;
+
+                global.output_db_object.field_prefix = argv[i];
+            }
             else if(!strcmp(argv[i], "-t"))
                 tags_type_flag = true;
             else if(!strcmp(argv[i], "-d"))
                 db_type_flag = true;
             else if(!strcmp(argv[i], "-f"))
                 tags_file_name_flag = true;
+            else if((!strcmp(argv[i], "-p")) ||
+                    (!strcmp(argv[i], "--prefix")))
+            {
+                db_field_prefix_flag = true;
+            }
             else if((!strcmp(argv[i], "-h")) || (!strcmp(argv[i], "--help")))
             {
                 fprintf(stdout, get_help_string());

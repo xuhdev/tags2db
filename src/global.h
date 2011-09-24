@@ -88,6 +88,7 @@ typedef struct stuInputTagObject
 typedef struct stuOutputDbObject
 {
     const char*     connection_string;
+    const char*     field_prefix;  /* prefix of field names */ 
 } OutputDbObject;
 
 /* tag types */
