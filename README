@@ -1,5 +1,7 @@
-Tags2db is a program that converts tags files (ctags, etags, etc) to database
-tables (sqlite3, MySQL, etc). Currently only ctags and sqlite3 are supported.
+Tags2db is a program that converts tags files (ctags, etc.) to database tables
+(sqlite3, etc.). Currently only ctags and sqlite3 are supported. Other tags
+files such as etags, gccxml, and other databases such as MySQL will be
+supported in the future.
 
 1. Installation
 
