@@ -48,6 +48,7 @@ AC_CHECK_FUNCS( \
                memmove \
                memset \
                perror \
+               printf \
                strcat \
                strchr \
                strcmp \
