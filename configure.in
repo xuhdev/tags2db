@@ -19,6 +19,22 @@ else
     AC_MSG_ERROR(Sqlite3 not found.)
 fi
 
+# gccxml
+AC_ARG_ENABLE(gccxml,
+              [  --enable-gccxml  Enable gccxml support],
+              [ENABLED_GCCXML="$enableval"])
+
+if test "x$ENABLED_GCCXML" = "xyes"; then
+    AM_PATH_XML2(2.0.0,
+                 [CPPFLAGS="$CFLAGS $XML_CPPFLAGS"
+                  LIBS="$LIBS $XML_LIBS"],
+                  [AC_MSG_ERROR(Libxml2 is not found. Run ./configure with
+                   "--disable-gccxml" to disable gccxml support.)])
+
+    AC_DEFINE([ENABLED_GCCXML], [1],
+              [Define if you want to build with gccxml support])
+fi
+
 # Checks for header files.
 
 #check for headers that we must have
