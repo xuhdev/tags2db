@@ -13,8 +13,8 @@ AC_PROG_CC
 AX_LIB_SQLITE3
 echo $HAVE_SQLITE3
 if test "$success" = "yes"; then
-    CFLAGS="$SQLITE3_CFLAGS $CFLAGS"
-    LIBS="$SQLITE3_LDFLAGS $LIBS"
+    CFLAGS="$CFLAGS $SQLITE3_CFLAGS"
+    LIBS="$LIBS $SQLITE3_LDFLAGS"
 else
     AC_MSG_ERROR(Sqlite3 not found.)
 fi
