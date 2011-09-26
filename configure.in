@@ -22,7 +22,8 @@ fi
 # gccxml
 AC_ARG_ENABLE(gccxml,
               [  --enable-gccxml  Enable gccxml support],
-              [ENABLED_GCCXML="$enableval"])
+              [ENABLED_GCCXML="$enableval"],
+              [ENABLED_GCCXML=yes])
 
 if test "x$ENABLED_GCCXML" = "xyes"; then
     AM_PATH_XML2(2.0.0,
