@@ -105,3 +105,18 @@ AC_CHECK_FUNCS( \
                strndup)
 
 AC_OUTPUT([Makefile src/Makefile])
+
+echo "
+                 tags2db
+
+  ---------------- features ----------------
+
+  Tags support:
+  ctags ........................ yes
+  gccxml ....................... $ENABLED_GCCXML
+
+  Database support:
+  sqlite3 ...................... yes
+
+  Use 'make' to build and 'make install' to install tags2db
+  "
