@@ -1,7 +1,7 @@
-Tags2db is a program that converts tags files (ctags, etc.) to database tables
-(sqlite3, etc.). Currently only ctags and sqlite3 are supported. Other tags
-files such as etags, gccxml, and other databases such as MySQL will be
-supported in the future.
+Tags2db is a program that converts tags files (ctags, gccxml, etc.) to database
+tables (sqlite3, etc.). Currently only ctags and sqlite3 are supported. Other
+tags files such as etags, and other databases such as MySQL will be supported
+in the future.
 
 1. Installation
 
@@ -25,6 +25,9 @@ Run ./configure and make:
 $ ./configure
 $ make
 
+You could also run "./configure --help" to see more compilation arguments
+before run "./configure".
+
 Now the binary executables should be built. To install it, run the following
 command:
 
@@ -46,4 +49,4 @@ See the file COPYING.
 
 
 Hong Xu
-2011/09/12
+2011/09/27
