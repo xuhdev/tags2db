@@ -49,7 +49,11 @@ typedef signed int      _Bool;
 # define false  0
 #endif /* HAVE_STDBOOL_H */
 
-#define TAGS_TYPE_INFO_COUNT   1
+#ifdef ENABLED_GCCXML
+# define TAGS_TYPE_INFO_COUNT   2
+#else
+# define TAGS_TYPE_INFO_COUNT   1
+#endif
 #define DB_TYPE_INFO_COUNT     1
 
 #ifndef DEFINED_STRUCT_RECORD

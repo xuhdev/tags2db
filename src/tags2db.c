@@ -17,6 +17,7 @@
 
 #include "global.h"
 #include "tags_ctags.h"
+#include "tags_gccxml.h"
 #include "db_sqlite3.h"
 #include "record.h"
 
@@ -71,9 +72,16 @@ main(int argc, const char *argv[])
     /* zero global */
     memset(&global, 0, sizeof(global));
 
-    global.tags_type_infos[0].name = "ctags";
-    global.tags_type_infos[0].func_read_one_record =
+    i = 0;
+    global.tags_type_infos[i].name = "ctags";
+    global.tags_type_infos[i].func_read_one_record =
         tags_ctags_read_one_record;
+    ++ i;
+#ifdef ENABLED_GCCXML
+    global.tags_type_infos[i].name = "gccxml";
+    global.tags_type_infos[i].func_read_one_record =
+        tags_gccxml_read_one_record;
+#endif
 
     global.db_type_infos[0].name = "sqlite3";
     global.db_type_infos[0].func_initialize = db_sqlite3_initialize;

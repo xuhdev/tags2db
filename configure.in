@@ -57,6 +57,7 @@ AC_CHECK_TYPES([size_t])
 # compatible malloc
 AC_CHECK_FUNCS( \
                fclose \
+               fileno \
                fgets \
                fopen \
                fprintf \
