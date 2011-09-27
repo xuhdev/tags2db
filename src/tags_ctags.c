@@ -92,7 +92,7 @@ tags_ctags_read_one_record(InputTagObject* ito)
         ret->fields_name[1] = strdup("tagfile");
         ret->fields_name[2] = strdup("tagaddress");
 
-        ret->data = malloc(sizeof(Variant) * ret->number);
+        ret->data = (Variant*) malloc(sizeof(Variant) * ret->number);
         for(i = 0; i < 3; ++ i)
         {
             ret->data[i].type = VARIANT_TYPE_STRING;
