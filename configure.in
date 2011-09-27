@@ -36,8 +36,7 @@ AM_PATH_XML2(2.5.0, [LIBXML2_PRESENT="yes"], [LIBXML2_PRESENT="no"])
 
 if test "x$LIBXML2_PRESENT" = "xno"; then
     if test "x$ENABLED_GCCXML" = "xyes"; then
-        AC_MSG_ERROR([Libxml2 is not found. Run ./configure with \
-                      "--disable-gccxml" to disable gccxml support.])
+        AC_MSG_ERROR([Libxml2 is not found. Run ./configure with "--disable-gccxml" to disable gccxml support.])
     fi
     ENABLED_GCCXML="no"
 elif test "x$LIBXML2_PRESENT" = "xyes"; then
