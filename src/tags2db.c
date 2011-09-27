@@ -17,7 +17,9 @@
 
 #include "global.h"
 #include "tags_ctags.h"
-#include "tags_gccxml.h"
+#ifdef ENABLED_GCCXML
+# include "tags_gccxml.h"
+#endif /* ENABLED_GCCXML */
 #include "db_sqlite3.h"
 #include "record.h"
 

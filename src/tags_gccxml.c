@@ -16,6 +16,9 @@
  */
 
 #include "global.h"
+
+#ifdef ENABLED_GCCXML /* if file is only valid when gccxml is enabled */
+
 #include "tags_gccxml.h"
 #include <libxml/xmlreader.h>
 
@@ -91,3 +94,5 @@ tags_gccxml_read_one_record(InputTagObject* ito)
 
     return ret;
 }
+
+#endif /* ENABLED_GCCXML */

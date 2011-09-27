@@ -19,9 +19,13 @@
 #define TAGS_GCCXML_H
 
 #include "global.h"
+
+#ifdef ENABLED_GCCXML /* if file is only valid when gccxml is enabled */
+
 #include "record.h"
 
 Record* tags_gccxml_read_one_record(InputTagObject* ito);
 
+#endif /* ENABLED_GCCXML */
 
 #endif /* end of include guard: TAGS_GCCXML_H */
