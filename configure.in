@@ -20,8 +20,9 @@ else
 fi
 
 # gccxml
-# if --enable-gccxml is not specified, enable this feature when libxml2 is
-# available; if --enable-gccxml is specified, do as specified
+# if --enable-gccxml is not specified, enable this feature when both libxml2
+# and fileno is presented is available; if --enable-gccxml is specified, do as
+# specified
 AC_ARG_ENABLE(gccxml,
               [  --enable-gccxml  Enable gccxml support],
               [ENABLED_GCCXML="$enableval"],
@@ -33,13 +34,26 @@ if test "x$ENABLED_GCCXML" != "xyes" -a "x$ENABLED_GCCXML" != "xno" -a \
 fi
 
 AM_PATH_XML2(2.5.0, [LIBXML2_PRESENT="yes"], [LIBXML2_PRESENT="no"])
+AC_CHECK_FUNC(fileno, [FUNC_FILENO_PRESENT="yes"], [FUNC_FILENO_PRESENT="no"])
 
-if test "x$LIBXML2_PRESENT" = "xno"; then
+if test "x$LIBXML2_PRESENT" = "xyes" -a "x$FUNC_FILENO_PRESENT" = "xyes"; then
+    GCCXML_PRECONDITION="yes"
+else
+    GCCXML_PRECONDITION="no"
+fi
+
+if test "x$GCCXML_PRECONDITION" = "xno"; then
     if test "x$ENABLED_GCCXML" = "xyes"; then
-        AC_MSG_ERROR([Libxml2 is not found. Run ./configure with "--disable-gccxml" to disable gccxml support.])
+        if test "x$LIBXML2_PRESENT" = "xno"; then
+            AC_MSG_ERROR([Libxml2 is not found, thus gccxml support could not be enabled. Run ./configure with "--disable-gccxml" to disable gccxml support.])
+        fi
+        if test "x$FUNC_FILENO_PRESENT" = "xno"; then
+            AC_MSG_ERROR([Function "fileno" is not found, thus gccxml support could not be enabled. Run ./configure with "--disable-gccxml" to disable gccxml support.])
+        fi
+        AC_MSG_ERROR([Gccxml support could not be enabled for unknown reason. Run ./configure with "--disable-gccxml" to disable gccxml support.])
     fi
     ENABLED_GCCXML="no"
-elif test "x$LIBXML2_PRESENT" = "xyes"; then
+elif test "x$GCCXML_PRECONDITION" = "xyes"; then
     if test "x$ENABLED_GCCXML" = "xno"; then
         ENABLED_GCCXML="no"
     else
@@ -82,7 +96,6 @@ AC_CHECK_TYPES([size_t])
 # compatible malloc
 AC_CHECK_FUNCS( \
                fclose \
-               fileno \
                fgets \
                fopen \
                fprintf \
