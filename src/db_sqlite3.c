@@ -94,20 +94,22 @@ db_sqlite3_initialize(const OutputDbObject* odo)
     free(statement);
 
     /*
-     * Now we create the table. The table has one field (tagname text). If we
+     * Now we create the table. The table has one field (id INTEGER). If we
      * failed to create the table, we return 2
      */
     statement = (char*) malloc((
         27 +                                /* CREATE TABLE IF NOT EXISTS */
+        1 +                                 /* ( */
         strlen(db_sqlite3_gv.table_name) +  /* table_name */
-        28 +                                /* (tagname TEXT DEFAULT NULL); */
+        51 +                                /* id INTEGER NOT NULL PRIMARY 
+                                               KEY ASC AUTOINCREMENT); */
         1)                                  /* NULL */
         * sizeof(char));
     strcpy(statement, "CREATE TABLE IF NOT EXISTS ");
     strcat(statement, db_sqlite3_gv.table_name);
     strcat(statement, "(");
     strcat(statement, odo->field_prefix);
-    strcat(statement, "tagname TEXT DEFAULT NULL);");
+    strcat(statement, "id INTEGER NOT NULL PRIMARY KEY ASC AUTOINCREMENT);");
 
     if(sqlite3_exec(db_sqlite3_gv.handle, statement,
                 NULL, NULL, NULL) != SQLITE_OK)
@@ -119,9 +121,9 @@ db_sqlite3_initialize(const OutputDbObject* odo)
 
     free(statement);
 
-    /* add the field tagname to db_sqlite3_gv.fields_name */
+    /* add the field id to db_sqlite3_gv.fields_name */
     db_sqlite3_gv.fields_name[db_sqlite3_gv.fields_number ++] =
-        strdup("tagname");
+        strdup("id");
 
     /* begin transaction */
     if(sqlite3_exec(db_sqlite3_gv.handle, "BEGIN",
