@@ -49,12 +49,17 @@ else
     AC_MSG_ERROR([Uknown value of LIBXML2_PRESENT: $LIBXML2_PRESENT])
 fi
 
+echo "------"
 if test "x$ENABLED_GCCXML" = "xyes"; then
     AC_DEFINE([ENABLED_GCCXML], [1],
               [Define if you want to build with gccxml support])
     CPPFLAGS="$CFLAGS $XML_CPPFLAGS"
     LIBS="$LIBS $XML_LIBS"
+    echo "gccxml support is enabled."
+else
+    echo "gccxml supported is disabled."
 fi
+echo "------"
 
 # Checks for header files.
 
