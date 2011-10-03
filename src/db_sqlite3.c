@@ -100,17 +100,13 @@ db_sqlite3_initialize(const OutputDbObject* odo)
     statement = (char*) malloc((
         27 +                                /* CREATE TABLE IF NOT EXISTS */
         strlen(db_sqlite3_gv.table_name) +  /* table_name */
-        1 +                                 /* ( */
-        strlen(odo->field_prefix) +         /* field prefix */
-        51 +                                /* id INTEGER NOT NULL PRIMARY 
+        52 +                                /* (id INTEGER NOT NULL PRIMARY 
                                                KEY ASC AUTOINCREMENT); */
         1)                                  /* NULL */
         * sizeof(char));
     strcpy(statement, "CREATE TABLE IF NOT EXISTS ");
     strcat(statement, db_sqlite3_gv.table_name);
-    strcat(statement, "(");
-    strcat(statement, odo->field_prefix);
-    strcat(statement, "id INTEGER NOT NULL PRIMARY KEY ASC AUTOINCREMENT);");
+    strcat(statement, "(id INTEGER NOT NULL PRIMARY KEY ASC AUTOINCREMENT);");
 
     if(sqlite3_exec(db_sqlite3_gv.handle, statement,
                 NULL, NULL, NULL) != SQLITE_OK)
@@ -121,10 +117,6 @@ db_sqlite3_initialize(const OutputDbObject* odo)
     }
 
     free(statement);
-
-    /* add the field id to db_sqlite3_gv.fields_name */
-    db_sqlite3_gv.fields_name[db_sqlite3_gv.fields_number ++] =
-        strdup("id");
 
     /* begin transaction */
     if(sqlite3_exec(db_sqlite3_gv.handle, "BEGIN",
