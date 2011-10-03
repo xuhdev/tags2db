@@ -99,8 +99,9 @@ db_sqlite3_initialize(const OutputDbObject* odo)
      */
     statement = (char*) malloc((
         27 +                                /* CREATE TABLE IF NOT EXISTS */
-        1 +                                 /* ( */
         strlen(db_sqlite3_gv.table_name) +  /* table_name */
+        1 +                                 /* ( */
+        strlen(odo->field_prefix) +         /* field prefix */
         51 +                                /* id INTEGER NOT NULL PRIMARY 
                                                KEY ASC AUTOINCREMENT); */
         1)                                  /* NULL */
