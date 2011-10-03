@@ -43,10 +43,12 @@ print_help_string(void)
     printf("--version          Print version information\n");
     printf("\n");
     printf("e.g.\n");
-    printf("Convert a ctags file to a sqlite database:\n");
+    printf("Convert a ctags file to a sqlite database in which table \"tags\" contains the tags information:\n");
     printf("tags2db -t ctags -d sqlite3 ./tags tags.sqlite:tags\n");
     printf("Generate tags for /usr/include by Exuberant Ctags and put them into a sqlite database:\n");
     printf("ctags -R  -f - -u /usr/include | tags2db -f - tags.sqlite:tags\n");
+    printf("Convert a gccxml output file to a sqlite database:\n");
+    printf("tags2db -t gccxml out.xml gccxml.sqlite:tags\n");
     printf("Then you could execute \"sqlite3 -header tags.sqlite3 \'select * from tags;\'\" on shell to check the database.\n");
     printf("\n");
 }
