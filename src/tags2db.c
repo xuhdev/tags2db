@@ -36,7 +36,7 @@ print_help_string(void)
     printf("Options:\n");
     printf("\n");
     printf("-f                 Input tags file name(\"-\" means reading from stdin\n");
-    printf("-t                 Input tags type (ctags, etc.). Default ctags\n");
+    printf("-t                 Input tags type (ctags, gccxml, etc.). Default ctags\n");
     printf("-d                 Output database type (sqlite3, etc.). Default sqlite3\n");
     printf("-p or --prefix     Prefix added to field names of the databse. Default \"tags2db_\"\n");
     printf("-h or --help       Print this help message\n");
