@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>tags2db: convert tags files to databases </title>
+
+    <style type="text/css">
+      body {
+        margin-top: 1.0em;
+        background-color: #ffffff;
+        font-family: Helvetica, Arial, FreeSans, san-serif;
+        color: #000000;
+      }
+      #container {
+        margin: 0 auto;
+        width: 700px;
+      }
+      h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
+      h1 .small { font-size: 0.4em; }
+      h1 a { text-decoration: none }
+      h2 { font-size: 1.5em; color: #000000; }
+      h3 { text-align: center; color: #000000; }
+      a { color: blue; }
+      .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+      .download { float: right; }
+      pre { background: #000; color: #fff; padding: 15px;}
+      hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+      .footer { text-align:center; padding-top:30px; font-style: italic; }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+
+      <h1>
+          tags2db
+      </h1>
+
+      <div class="description">
+          A command line tool that convert tags files (ctags, gccxml, etc.) to
+          databases (sqlite, etc.)
+      </div>
+
+      <p>
+      Tags2db is a program that converts tags files (
+      <a href=http://ctags.sf.net>ctags</a>, 
+      <a href=http://www.gccxml.org>gccxml</a>, etc.) to database tables (
+      <a href=http://www.sqlite.org>SQLite</a>, etc.). Currently only ctags,
+      gccxml and SQLite are supported.  Other tags files such as etags,
+      and other databases such as MySQL will be supported in the future.
+      </p>
+
+      <h2>Screenshot</h2>
+      <p>
+      Here are two screenshots of the SQLite database converted from ctags (the
+      SQLite database is displayed by
+      <a href=http://sqlitebrowser.sf.net>SQLite Database Browser</a>):
+      <img src=img/screenshot_fields.png alt="screenshot_fields"/>
+      <img src=img/screenshot_records.png alt="screenshot_records"/>
+      </p>
+
+      <h2>Dependencies</h2>
+      <p>
+      <a href=http://www.sqlite.org>SQLite</a><br>
+      <a href=http://xmlsoft.org>libxml2</a> (Optional, if you want gccxml is supported)<br>
+      </p>
+      <h2>Install</h2>
+      <p>
+      To build and install it, First install sqlite3 development package and
+      optionally libxml2 developement package. On Debian, you could do this by
+      executing the following command:
+      <pre> # aptitude install libsqlite3-dev<br> # aptitude install libxml2-dev</pre>
+
+      If you are using a source tarball, then extract it:
+
+      <pre> $ tar zxvf tags2db-{version}.tar.gz <br> $ cd tags2db-{version} </pre>
+
+      Or you obtained the source code through the git repository, run ./autogen.sh:
+
+      <pre> $ cd /path/to/source/dir <br> $ ./autogen.sh </pre>
+
+      Run ./configure and make:
+
+      <pre> $ ./configure<br> $ make </pre>
+
+      Now the binary executables should be built. To install it, run the following
+      command:
+
+      <pre> $ su -c 'make install' </pre>
+
+      This command requires root privilege.
+
+      </p>
+      <h2>License</h2>
+      <p><a href=http://www.gnu.org/licenses/gpl-3.0.html>GPL v3</a></p>
+      <h2>Author</h2>
+      <p><a href=http://xuhdev.bitbucket.org>Hong Xu</a> (<a href="mailto:xuhdev@gmail.com">xuhdev@gmail.com</a>)</p>
+
+      <h2>Download</h2>
+      <p>
+      Click <a href=https://github.com/downloads/xuhdev/tags2db/tags2db-0.10.1.1.tar.gz>here</a>
+      to download the latest stable release directly. Currently version 0.10.1.1 is
+      the latest stable version.<br>
+
+      For other releases, click
+      <a href=https://github.com/xuhdev/tags2db/downloads>here</a> to visit the download
+      page.
+      </p>
+
+      <h2>Bug Report and Feature Request</h2>
+      <p>
+      If you find any bug or you have some good suggestions, please submit it on the
+      <a href=https://github.com/xuhdev/tags2db/issues>issue tracker</a> or send an
+      email to me
+      (<a href="mailto:Hong Xu<xuhdev@gmail.com>">xuhdev@gmail.com</a>).
+      </p>
+
+      <h2>For Developers</h2>
+      <p>
+      This project is hosted with <a href=http://git-scm.org>git</a>, a distributed revision control system.<br>
+      Click <a href=http://github.com/xuhdev/tags2db>here</a> to visit the code repository page.
+      </p>
+
+      <!--
+      <h2>
+        Make a donation<br>
+      </h2>
+      <p>
+      You could make a donation to support my development by Paypal.<br>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+        ">
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+      </form>
+      </p>
+      -->
+      <div class="footer">
+      </div>
+
+    </div>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+          var pageTracker = _gat._getTracker("UA-23682803-2");
+          pageTracker._trackPageview();
+          } catch(err) {}
+    </script>
+  </body>
+</html>
+
+<!-- vim: sw=2 ts=2 sts=2 et
+-->
